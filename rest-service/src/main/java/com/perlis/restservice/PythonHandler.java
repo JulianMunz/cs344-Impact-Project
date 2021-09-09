@@ -24,10 +24,10 @@ public class PythonHandler {
      * @return Output in form of a string
      * @throws IOException
      */
-    public String output() throws IOException {
+    public String output(String args) throws IOException {
         try {
             String pythonFile = PythonHandler.class.getResource(fileName).toURI().getPath();
-            ProcessBuilder processBuilder = new ProcessBuilder("python", pythonFile);
+            ProcessBuilder processBuilder = new ProcessBuilder("python", pythonFile, args);
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
             BufferedReader processOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -41,6 +41,15 @@ public class PythonHandler {
             return "File not found!";
         }
 
+    }
+
+    public static void main(String[] args) {
+        PythonHandler py = new PythonHandler("/helloworld.py");
+        try {
+            System.out.println(py.output("Hello"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
