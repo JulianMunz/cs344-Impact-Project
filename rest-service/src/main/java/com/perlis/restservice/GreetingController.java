@@ -79,19 +79,12 @@ public class GreetingController {
 					k++;
 				}
 			}
-
 			for (int i = 0; i < count_unique; i++) {
-
-				System.out.println();
-				System.out.println(
-						"----------------------------------------------------------------------------------------------------------------");
 				System.out.println(individual_sections[i]);
-				System.out.println(
-						"---------------------------------------------------------------------------------------------------------------");
-				System.out.println();
-
+				if ((i + 1) != count_unique) {
+					System.out.print(",");
+				}
 			}
-
 			return response;
 		} catch (IOException e) {
 			e.printStackTrace();
