@@ -33,14 +33,17 @@ public class App
         try {
             String response = Jsoup.connect(url).execute().body();
 			doc = Jsoup.parse(response);
-            Element divs = doc.select("div").first();
+            Document document = doc;
+            Element divs = document.select("div").first();
             String output = divs.outerHtml();
 
             ArrayList<String> allDivs = new ArrayList<>();
             
             Pattern pattern = Pattern.compile("</?div.*?>");
-
+            Pattern paragraphPattern = Pattern.compile("<p>");
+            Pattern quotes = Pattern.compile("\"([^\"]*)\"");
             Matcher matcher = pattern.matcher(output);
+
             while (matcher.find()) {
                 allDivs.add(matcher.group());
             }
@@ -52,12 +55,30 @@ public class App
 
             int depth = 0;
             for (int i = 0; i < allDivs.size(); i++) {
+                int paragraphs = 0;
+                Matcher divMatches = quotes.matcher(allDivs.get(i).toString());
+                if (divMatches.find()) {
+                    String match = divMatches.group();
+                    match = match.replaceAll("\"", "");
+                    Elements matchingDivs = document.getElementsByClass(match);
+                    Element div = matchingDivs.first();
+                    if (div != null) {
+                        String tempData = div.html();
+                        Matcher paragraphMatcher = paragraphPattern.matcher(tempData);
+                        while (paragraphMatcher.find()) {
+                            paragraphs++;
+                        } 
+                    }
+                }
+                       
                 if (allDivs.get(i).charAt(1) == '/') depth--;
                 else {
                     depth++;
                     myWriter.append(allDivs.get(i).toString())
                     .append(",")
                     .append(String.valueOf(depth))
+                    .append(",")
+                    .append(String.valueOf(paragraphs))
                     .append("\n");
                 }
             }
