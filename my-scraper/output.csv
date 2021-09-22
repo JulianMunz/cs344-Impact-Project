@@ -1,0 +1,131 @@
+<div class="above-footer">,1
+<div id="tpg_above-navigation--d" class="display-desktop">,2
+<div id="tpg_above-navigation--m" class="display-mobile">,2
+<div class="header-nav__wrapper header-nav-wrapper">,2
+<div class="header-nav__logo header-nav__logo--desktop logo">,3
+<div class="header-nav__logo-img header-nav__logo-img--us">,4
+<div class="header-nav__inner-content fixed">,3
+<div class="header-nav__inner-content--top">,4
+<div class="header-nav__tagline tagline">,5
+<div class="search-trigger gs-trigger-open gs-trigger-autofocus" data-beam-element-clicked data-beam-action-outcome="OPEN" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-text="Search">,6
+<div class="header-nav__top-right-components">,5
+<div class="disclosure uk-live">,6
+<div class="social-icons">,6
+<div class="region-wrapper top-right-components_region">,6
+<div class="switch-region display-active" id="beam-uk-toggle">,7
+<div class="header-nav__inner-content--bottom">,4
+<div class="main-nav">,5
+<div class="header-nav__bottom-right-components">,6
+<div class="header-nav__mobile-components">,3
+<div data-beam-element-clicked data-beam-element-type="BUTTON" data-beam-text="HAMBURGER" data-beam-action-outcome="OPEN" data-beam-location="NAVIGATION" class="header-nav__hamburger gs-trigger-close">,4
+<div class="header-nav__logo header-nav__logo--mobile logo">,4
+<div class="header-nav__logo-img header-nav__logo-img--us">,5
+<div class="search-trigger gs-trigger-open gs-trigger-autofocus" data-beam-element-clicked data-beam-action-outcome="OPEN" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-text="Search">,4
+<div id="gs-mount-app-modal">,2
+<div class="gs-modal-top-card" style="display: none;" data-card-title="Chase Sapphire Preferred® Card" data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2021/09/87c574a0-ff60-11eb-97b1-37a1bb7c2537-1.png" data-card-url="https://thepointsguy.com/card-hub/chase-sapphire-preferred-card/">,2
+<div class="gs-modal-top-card" style="display: none;" data-card-title="The Platinum Card® from American Express" data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2021/08/434eeed0-66f1-11eb-be9c-9790947db9db-1.png" data-card-url="https://thepointsguy.com/card-hub/the-platinum-card-from-american-express/">,2
+<div class="gs-modal-top-card" style="display: none;" data-card-title="American Express® Gold Card" data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2021/06/4e7d24d0-66ff-11eb-be9c-9790947db9db.png" data-card-url="https://thepointsguy.com/card-hub/the-american-express-gold-card/">,2
+<div class="gs-modal-top-card" style="display: none;" data-card-title="Capital One Venture Rewards Credit Card" data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2021/09/ff304640-e963-11eb-a48f-65ac0bb53c5b-5.png" data-card-url="https://thepointsguy.com/card-hub/capital-one-venture-rewards-credit-card/">,2
+<div class="disclosure uk-live disclosure--mobile-only">,2
+<div id="gs-mount-app-nav">,2
+<div id="notification-waypoint">,2
+<div class="article-header use-lightbox template-two-columns article-header has-background-image has-overlay" style="">,2
+<div class="article-header__hero">,3
+<div class="post-content use-lightbox template-two-columns">,2
+<div class="global__container">,3
+<div class="article-body__inner-wrap">,4
+<div class="article-body__title-wrap">,5
+<div class="label rotated">,6
+<div class="article-body__author">,5
+<div class="meta">,6
+<div class="byline">,7
+<div class="timestamp" data-timestamp="2021-09-16T15:00:51.000Z">,7
+<div class="article-body__social">,5
+<div class="social">,6
+<div class="article_social-sharing">,7
+<div class="article-wrapper">,5
+<div class="article-body-content">,6
+<div class="beam-the-content">,7
+<div class="toc-module-content">,8
+<div class="mceTemp">,8
+<div class="hub--email-capture hub-module hub-module--full-bleed">,7
+<div data-iterable>,8
+<div class="newsletter js-newsletter " data-iterable-before-success>,9
+<div class="newsletter__title">,10
+<div class="newsletter__form">,10
+<div class="newsletter__input" data-beam-form-started>,11
+<div class="newsletter__consent">,11
+<div class="newsletter__errors js-email-capture-errors">,11
+<div class="iterable-show-success" data-iterable-show-success>,9
+<div class="newsletter-loading js-newsletter-loading" data-iterable-is-loading>,9
+<div class="article-body-content--author-blurb">,7
+<div class="article-body-content--author-blurb_icons">,8
+<div class="related-articles__related-header">,6
+<div class="swiper-container related-articles__swiper">,6
+<div class="swiper-wrapper">,7
+<div class="swiper-slide related-link beam-related-link " data-beam-text="North America’s best airports are Miami and New Orleans, says J.D. Power" data-beam-position="1" data-beam-outbound-url="https://thepointsguy.com/news/jd-power-best-airports-2021-miami-new-orleans/?navtid=More-1" data-beam-location="More from the Points Guy">,8
+<div class="attachment-image size-related-article">,9
+<div class="editorial-meta meta">,9
+<div class="title">,10
+<div class="editorial-meta__text-wrap">,10
+<div class="tpg-label label">,11
+<div class="tpg-label timestamp">,11
+<div class="swiper-slide related-link beam-related-link " data-beam-text="Wide-ranging Alaska deal alert: Round-trip flights under $200" data-beam-position="2" data-beam-outbound-url="https://thepointsguy.com/deals/wide-range-alaska-deal/?navtid=More-2" data-beam-location="More from the Points Guy">,8
+<div class="attachment-image size-related-article">,9
+<div class="editorial-meta meta">,9
+<div class="title">,10
+<div class="editorial-meta__text-wrap">,10
+<div class="tpg-label label">,11
+<div class="tpg-label timestamp">,11
+<div class="swiper-slide related-link beam-related-link " data-beam-text="Here’s how you can earn 100,000 points on the Amex Business Platinum" data-beam-position="3" data-beam-outbound-url="https://thepointsguy.com/news/amex-business-platinum-current-offer/?navtid=More-3" data-beam-location="More from the Points Guy">,8
+<div class="attachment-image size-related-article">,9
+<div class="editorial-meta meta">,9
+<div class="title">,10
+<div class="editorial-meta__text-wrap">,10
+<div class="tpg-label label">,11
+<div class="tpg-label timestamp">,11
+<div class="swiper-pagination">,6
+<div id="right-rail" class="right-rail-sticky">,5
+<div id="tpg_right-rail--1" class="tpg-right-rail">,6
+<div id="tpg_right-rail--2" class="tpg-right-rail">,6
+<div id="tpg_right-rail--3" class="tpg-right-rail">,6
+<div class="favorite-cards-wrapper">,5
+<div class="favorite-cards-intro">,6
+<div class="favorite-cards-meta">,7
+<div class="title">,8
+<div class="chose-content" id="js-modal-content">,8
+<div class="chose-content__title">,9
+<div class="cards-main-content">,6
+<div class="cards-wrapper">,7
+<div class="card beam-card" data-beam-position="1" data-beam-product-id="22504813" data-beam-sku="156 L" data-beam-name="The Platinum Card® from American Express" data-beam-brand="American Express" data-beam-location="links" data-beam-text="FAV-CARD-WIDGET-1-CARD">,8
+<div class="offer-flag mobile-only">,9
+<div class="img-wrapper">,9
+<div class="meta">,9
+<div class="offer-flag show-tablet-up">,10
+<div class="title">,10
+<div class="current-offer override">,10
+<div class="offer override">,10
+<div class="terms">,10
+<div class="card beam-card" data-beam-position="2" data-beam-product-id="221410120" data-beam-sku="" data-beam-name="Citi Premier® Card" data-beam-brand="Citi" data-beam-location="links" data-beam-text="FAV-CARD-WIDGET-2-CARD">,8
+<div class="img-wrapper">,9
+<div class="meta">,9
+<div class="title">,10
+<div class="current-offer">,10
+<div class="offer">,10
+<div class="terms">,10
+<div class="card beam-card" data-beam-position="3" data-beam-product-id="7697" data-beam-sku="" data-beam-name="American Express® Gold Card" data-beam-brand="American Express" data-beam-location="links" data-beam-text="FAV-CARD-WIDGET-3-CARD">,8
+<div class="img-wrapper">,9
+<div class="meta">,9
+<div class="title">,10
+<div class="current-offer">,10
+<div class="offer">,10
+<div class="terms">,10
+<div class="card beam-card" data-beam-position="4" data-beam-product-id="220310483" data-beam-sku="" data-beam-name="Delta SkyMiles® Platinum American Express Card" data-beam-brand="American Express" data-beam-location="links" data-beam-text="FAV-CARD-WIDGET-4-CARD">,8
+<div class="offer-flag mobile-only">,9
+<div class="img-wrapper">,9
+<div class="meta">,9
+<div class="offer-flag show-tablet-up">,10
+<div class="title">,10
+<div class="current-offer">,10
+<div class="offer">,10
+<div class="terms">,10
