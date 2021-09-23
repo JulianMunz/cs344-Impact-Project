@@ -42,6 +42,7 @@ public class App
             Pattern pattern = Pattern.compile("</?div.*?>");
             Pattern paragraphPattern = Pattern.compile("<p>");
             Pattern quotes = Pattern.compile("\"([^\"]*)\"");
+            Pattern divClosingTag = Pattern.compile("</div>");
             Matcher matcher = pattern.matcher(output);
 
             while (matcher.find()) {
@@ -63,11 +64,8 @@ public class App
                     Elements matchingDivs = document.getElementsByClass(match);
                     Element div = matchingDivs.first();
                     if (div != null) {
-                        String tempData = div.html();
-                        Matcher paragraphMatcher = paragraphPattern.matcher(tempData);
-                        while (paragraphMatcher.find()) {
-                            paragraphs++;
-                        } 
+                        Elements divChildren = div.children().select(":root > p");
+                        paragraphs = divChildren.size();
                     }
                 }
                        

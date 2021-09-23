@@ -1,4 +1,4 @@
-<div class="above-footer">,1,84
+<div class="above-footer">,1,0
 <div id="tpg_above-navigation--d" class="display-desktop">,2,0
 <div id="tpg_above-navigation--m" class="display-mobile">,2,0
 <div class="header-nav__wrapper header-nav-wrapper">,2,0
@@ -32,9 +32,9 @@
 <div id="notification-waypoint">,2,0
 <div class="article-header use-lightbox template-two-columns article-header has-background-image has-overlay" style="">,2,0
 <div class="article-header__hero">,3,0
-<div class="post-content use-lightbox template-two-columns">,2,84
-<div class="global__container">,3,84
-<div class="article-body__inner-wrap">,4,84
+<div class="post-content use-lightbox template-two-columns">,2,0
+<div class="global__container">,3,0
+<div class="article-body__inner-wrap">,4,0
 <div class="article-body__title-wrap">,5,0
 <div class="label rotated">,6,0
 <div class="article-body__author">,5,0
@@ -44,13 +44,13 @@
 <div class="article-body__social">,5,0
 <div class="social">,6,0
 <div class="article_social-sharing">,7,0
-<div class="article-wrapper">,5,84
+<div class="article-wrapper">,5,3
 <div data-preamp="article-message">,6,0
-<div class="article-body-content">,6,81
-<div class="beam-the-content">,7,80
+<div class="article-body-content">,6,69
+<div class="beam-the-content">,7,0
 <div class="toc-module-content">,8,0
 <div class="mceTemp">,8,0
-<div class="hub--email-capture hub-module hub-module--full-bleed">,7,1
+<div class="hub--email-capture hub-module hub-module--full-bleed">,7,0
 <div data-iterable>,8,0
 <div class="newsletter js-newsletter " data-iterable-before-success>,9,0
 <div class="newsletter__title">,10,0
@@ -58,28 +58,28 @@
 <div class="newsletter__input" data-beam-form-started>,11,0
 <div class="newsletter__consent">,11,0
 <div class="newsletter__errors js-email-capture-errors">,11,0
-<div class="iterable-show-success" data-iterable-show-success>,9,1
+<div class="iterable-show-success" data-iterable-show-success>,9,0
 <div class="newsletter-loading js-newsletter-loading" data-iterable-is-loading>,9,0
 <div class="article-body-content--author-blurb">,7,0
 <div class="article-body-content--author-blurb_icons">,8,0
 <div class="related-articles__related-header">,6,0
 <div class="swiper-container related-articles__swiper">,6,0
 <div class="swiper-wrapper">,7,0
-<div class="swiper-slide related-link beam-related-link " data-beam-text="As the seasons change, was this really the ‘summer of New York City’?" data-beam-position="1" data-beam-outbound-url="https://thepointsguy.com/news/summer-of-nyc/?navtid=More-1" data-beam-location="More from the Points Guy">,8,0
+<div class="swiper-slide related-link beam-related-link " data-beam-text="Delta deal alert: Round-trip fares as low as $97 or 6,000 Skymiles" data-beam-position="1" data-beam-outbound-url="https://thepointsguy.com/news/delta-deal-alert-roundtrip-fares-as-low-as-97-or-6000-skymiles/?navtid=More-1" data-beam-location="More from the Points Guy">,8,0
 <div class="attachment-image size-related-article">,9,0
 <div class="editorial-meta meta">,9,0
 <div class="title">,10,0
 <div class="editorial-meta__text-wrap">,10,0
 <div class="tpg-label label">,11,0
 <div class="tpg-label timestamp">,11,0
-<div class="swiper-slide related-link beam-related-link " data-beam-text="6 ways Alaska Mileage Plan can improve and stay one of the best frequent flyer programs" data-beam-position="2" data-beam-outbound-url="https://thepointsguy.com/news/ways-alaska-mileage-plan-can-improve/?navtid=More-2" data-beam-location="More from the Points Guy">,8,0
+<div class="swiper-slide related-link beam-related-link " data-beam-text="Double down: Why it makes sense to get the Amex EveryDay Preferred and Amex Platinum" data-beam-position="2" data-beam-outbound-url="https://thepointsguy.com/news/amex-platinum-everyday-preferred/?navtid=More-2" data-beam-location="More from the Points Guy">,8,0
 <div class="attachment-image size-related-article">,9,0
 <div class="editorial-meta meta">,9,0
 <div class="title">,10,0
 <div class="editorial-meta__text-wrap">,10,0
 <div class="tpg-label label">,11,0
 <div class="tpg-label timestamp">,11,0
-<div class="swiper-slide related-link beam-related-link " data-beam-text="Why you might want to wait before booking a trip to Australia this Christmas" data-beam-position="3" data-beam-outbound-url="https://thepointsguy.com/news/australia-travel-this-christmas/?navtid=More-3" data-beam-location="More from the Points Guy">,8,0
+<div class="swiper-slide related-link beam-related-link " data-beam-text="You’ll soon be able to add digital vaccine cards to Apple’s mobile Wallet" data-beam-position="3" data-beam-outbound-url="https://thepointsguy.com/news/apple-wallet-digital-vaccine-card/?navtid=More-3" data-beam-location="More from the Points Guy">,8,0
 <div class="attachment-image size-related-article">,9,0
 <div class="editorial-meta meta">,9,0
 <div class="title">,10,0
