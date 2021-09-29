@@ -34,8 +34,11 @@ public class App
             String response = Jsoup.connect(url).execute().body();
 			doc = Jsoup.parse(response);
             Document document = doc;
+            /*
             Element divs = document.select("div").first();
             String output = divs.outerHtml();
+
+            
 
             ArrayList<String> allDivs = new ArrayList<>();
             
@@ -49,12 +52,37 @@ public class App
                 allDivs.add(matcher.group());
             }
             //System.out.println(allDivs.toString());
+            */
+
 
             File file = new File("output.csv");
             Writer myWriter = new FileWriter(file);
-            String eol = System.getProperty("line.seperator");
+            myWriter.append("class,parnum\n");
+            
+            //Simon
+            Elements elements = document.getAllElements();
+            for (Element element : elements) {
+                if (element.className() != "") {
+                    System.out.println(element.className());
+                    Elements paragraphs = element.select(":root > p");
+                    
+                    int parnum = paragraphs.size();
+                    System.out.println(parnum);
+                    myWriter
+                    .append(element.className())                  
+                    .append(",")
+                    .append(String.valueOf(parnum))
+                    .append("\n");
+                }
+            }
 
+            
+
+            /*
+            String eol = System.getProperty("line.seperator");
+            
             int depth = 0;
+            Element div = null;
             for (int i = 0; i < allDivs.size(); i++) {
                 int paragraphs = 0;
                 Matcher divMatches = quotes.matcher(allDivs.get(i).toString());
@@ -62,9 +90,9 @@ public class App
                     String match = divMatches.group();
                     match = match.replaceAll("\"", "");
                     Elements matchingDivs = document.getElementsByClass(match);
-                    Element div = matchingDivs.first();
+                    div = matchingDivs.first();
                     if (div != null) {
-                        Elements divChildren = div.children().select(":root > p");
+                        Elements divChildren = div.select(":root > p");
                         paragraphs = divChildren.size();
                     }
                 }
@@ -72,14 +100,17 @@ public class App
                 if (allDivs.get(i).charAt(1) == '/') depth--;
                 else {
                     depth++;
-                    myWriter.append(allDivs.get(i).toString())
-                    .append(",")
-                    .append(String.valueOf(depth))
+                    if (div != null) {
+                    //System.out.println(div.className());
+                    myWriter
+                    .append(div.className())                  
                     .append(",")
                     .append(String.valueOf(paragraphs))
                     .append("\n");
+                    }
                 }
             }
+            */
             myWriter.flush();
         } catch (Exception e) {
             e.printStackTrace();
