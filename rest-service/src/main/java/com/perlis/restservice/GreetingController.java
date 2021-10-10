@@ -1,9 +1,11 @@
 package com.perlis.restservice;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,99 +22,31 @@ public class GreetingController {
 
 	@GetMapping("/scrape")
 	public String scrape(@RequestParam(value = "url", defaultValue = "https://www.google.com/") String url) {
-
-		// I used scanner in order to get the url
-		Scanner in = new Scanner(System.in);
-		System.out.println("enter url : ");
-		url = in.nextLine();
-		in.close();
-
 		Document doc = null;
+		ArrayList<JSONObject> sect_list = new ArrayList<>();
 		try {
 			String response = Jsoup.connect(url).execute().body();
 			doc = Jsoup.parse(response);
-			Elements elements = doc.select("*"); // matches all elements
+			Document document = doc;
 
-			int no_of_sections = 0;
-			for (Element e : elements) {
-				no_of_sections++;
-
-			}
-
-			// transfer data to an array in order to remove repeated sections
-			int count = 0;
-			String[] sections = new String[no_of_sections];
-			for (Element e : elements) {
-				sections[count] = String.valueOf(e);
-				count++;
-			}
-
-			// remove subsections
-			for (int i = 0; i < no_of_sections; i++) {
-				for (int j = 0; j < no_of_sections; j++) {
-
-					String a = sections[i];
-					String b = sections[j];
-					if (i != j && isSubstring(b.trim(), a.trim()) != -1) {
-						sections[j] = "";
-
-					}
-
-				}
-
-			}
-
-			// count number of sections after removing subsections
-			int count_unique = 0;
-			for (int i = 0; i < no_of_sections; i++) {
-				if (sections[i] != "") {
-					count_unique++;
+			Elements elements = document.getAllElements();
+			for (Element element : elements) {
+				if (element.className() != "") {
+					Elements paragraphs = element.select(":root > p");
+					JSONObject obj = new JSONObject();
+					int parnum = paragraphs.size();
+					obj.append("name", element.className());
+					obj.append("par_num", String.valueOf(parnum));
+					sect_list.add(obj);
 				}
 			}
-
-			// transferring unique sections into array
-			int k = 0;
-			String individual_sections[] = new String[count_unique];
-			for (int i = 0; i < no_of_sections; i++) {
-				if (sections[i] != "") {
-					individual_sections[k] = sections[i];
-					k++;
-				}
-			}
-			for (int i = 0; i < count_unique; i++) {
-				System.out.println(individual_sections[i]);
-				if ((i + 1) != count_unique) {
-					System.out.print("\",\"");
-				}
-			}
-			return response;
-		} catch (IOException e) {
+			System.out.println();
+			PythonHandler py = new PythonHandler("/helloworld.py");
+			return py.output(sect_list.toString());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		// scraping failed
-		return "failed";
+		return null;
 	}
-
-	static int isSubstring(String s1, String s2) {
-		int M = s1.length();
-		int N = s2.length();
-
-		/* A loop to slide pat[] one by one */
-		for (int i = 0; i <= N - M; i++) {
-			int j;
-
-			/*
-			 * For current index i, check for pattern match
-			 */
-			for (j = 0; j < M; j++)
-				if (s2.charAt(i + j) != s1.charAt(j))
-					break;
-
-			if (j == M)
-				return i;
-		}
-
-		return -1;
-	}
-
 }
