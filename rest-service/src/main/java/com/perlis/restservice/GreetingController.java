@@ -41,7 +41,7 @@ public class GreetingController {
 				}
 			}
 			System.out.println();
-			PythonHandler py = new PythonHandler("/helloworld.py");
+			PythonHandler py = new PythonHandler("/classifier.py");
 			return py.output(sect_list.toString());
 		} catch (Exception e) {
 			e.printStackTrace();

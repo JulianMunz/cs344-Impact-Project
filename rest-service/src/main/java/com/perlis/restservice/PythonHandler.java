@@ -44,7 +44,7 @@ public class PythonHandler {
     }
 
     public static void main(String[] args) {
-        PythonHandler py = new PythonHandler("/helloworld.py");
+        PythonHandler py = new PythonHandler("/classifier.py");
         try {
             System.out.println(py.output("Hello"));
         } catch (IOException e) {
