@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wide-river-326910",
+  "private_key_id": "1036ff2719f62118c3bd398a78170699cf68dbfe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDjWKKTEQqhDkLQ\nKBbzplJLT7IP6+Az30MK+wAZxCvjp+khnAgWhmOTgiuzorUuhJmw8aUBWI1YAc0b\nyMWuuAU1vvr0J2JQFyjKcDRiYoTcJPEYPM7tn6+bCECx1rR5Cl7LIzyH/+v2Ls5z\nINzQDTWGZBXyV+7TssEYEBAvZ4UcMRzRSeuNFeJYGCfSny7lwCrjQ3M39vcNR/NM\nGBAqUwLVRyBzaKaVwqvTb8v40uk2GdJ13n1Ic2SFO96nDhsszcMVnymu/95wopfz\n0NbUM8NkYbX6xL9AfT9t472HqlYeiUYH2Fa0f6Sf2SigdfeqeRQzbK/AmaMVmmnG\n491Rz3FlAgMBAAECggEAEuVl6dxeP6GxpZ8svTFN9hWDLXXuVia7P06Pz78cOMQB\niWTFz/15NE769pInsLHzxkm8wb5honbP3KcqNcn0y5FP8XrT3ef24NCaV10XQZGj\nz7RqLJpRBw0/Yf4AVRkqui6iaYQOJub1YOCn3yEMmbAi74LQhnGn6/9Adng1D5vQ\nncloIPEmD1WCTkZdIQX6xdIE95vrQASmtPLXXdylGI8EGsoODEzfyIboWmzalkpv\nMB2i6/vvcG7LuVIHFUhNB77s/5O0+LqyiQQVsABys1Clq5Qtk0I2+0X3dDLTz1Qn\n7JfdMkIfXBlFuMHk6g6i2becudDakv/FVXvZyW4hcQKBgQD5S40XSQS+2AJ7kwCF\nX17qlj3lstadR2vWopImM2i6QA15oks5Djpe36WZjtoNhPVhP0OaH3QP5sC165pN\nNzq45UK5iBxzKFafmUCFWRFnTHS0zTSTkjQhphnMwuHfx2U/zzCC2499N48wzvgI\ndCgw3w7nVKhc9txzivbftUo1iQKBgQDpdfYTS7zninm/Bq7RaDfrTPoEaIi6xwgT\nKANVd93GyJZqdV6WwKUpHS1juLiq6wSeVffSbG/UPtDPuvR0jHqkPBjCR2SKccF5\nNZJQXVr1QHnC03Il5TQa8gygU2HIDYeNR1ogxo4e4/qFNwf40Ucv/wmRLh9D+xYk\ny8pPVWsB/QKBgDYKscBNfPDeJNOjD2baQNo7zZlAxpN7yx3RSjtrw5U0k3c9vm7U\n7cRpWR3LwOtTWlpFe6MqlF9qF3aYZ2+7vEgesvNDVV+FbBnXAAyoPUSWZ2pWXcJr\n3E87Eba4vHxlXkaR5KNJc3ail7Dt/QjgHWJSyIlPadwVS77kbhYa18Z5AoGAT8by\nhtd7vveP8NocxQxDB5IvYXBDQOggd0NWGE+0pmgHFmvzHbrI9Yq15vzJhgZ3do/T\n9sD9Wd75RfMR8/3JLvQmVcVFsxV6Uqweyn2MRoB42z2cJRz0uDx8WhEEOfN9naaD\nQu32xNGM2xbaD4mcNOeG4miLYJSdlYdaI9ABmBUCgYB80ZZGeamwky5ipbnUFx9k\n3gYnXkjGpJmUIYQlf+VlG2d2XXRHWeQ5G/yGyslExuwyP8icFoqno/i+cZPch776\nNFekxSAk/Cds7AS1r60dUILUSuRdY7lDVRrJwWMHy5JeCtpdT44A7lwn9qq5qocS\nwIDOOb9WNjVa/W3eFEaUXQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "diego-630@wide-river-326910.iam.gserviceaccount.com",
+  "client_id": "110019669692124682866",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/diego-630%40wide-river-326910.iam.gserviceaccount.com"
+}
