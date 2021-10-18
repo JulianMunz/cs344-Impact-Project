@@ -77,6 +77,21 @@ public class GreetingController {
 	@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping(value = "/getPredictions")
 	public void getPredictions() throws GeneralSecurityException, IOException{
+		
+		 // You can specify a credential file by providing a path to GoogleCredentials.
+  // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+  GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/wide-river-326910-1036ff2719f6.json"))
+        .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+  Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+
+
+
+  System.out.println("Buckets:");
+  Page<Bucket> buckets = storage.list();
+  for (Bucket bucket : buckets.iterateAll()) {
+    System.out.println(bucket.toString());
+		
+		
 		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 		Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
@@ -105,10 +120,14 @@ public class GreetingController {
 
 		List<String> scopes = new ArrayList<>();
 		scopes.add("https://www.googleapis.com/auth/cloud-platform");
-
+/*
 		GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
+		
+		*/
 		HttpRequestFactory requestFactory =
-				httpTransport.createRequestFactory(new HttpCredentialsAdapter(credential));
+				httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
+				
+				
 		HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
 
 		String response = request.execute().parseAsString();
