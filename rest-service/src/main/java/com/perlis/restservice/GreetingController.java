@@ -37,6 +37,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.google.api.gax.paging.Page;
+import com.google.auth.appengine.AppEngineCredentials;
+import com.google.auth.oauth2.ComputeEngineCredentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Bucket;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import com.google.common.collect.Lists;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 @RestController
 public class GreetingController {
 
@@ -80,7 +91,7 @@ public class GreetingController {
 		
 		 // You can specify a credential file by providing a path to GoogleCredentials.
   // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-  GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/wide-river-326910-1036ff2719f6.json"))
+  GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
         .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
   Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
@@ -100,11 +111,11 @@ public class GreetingController {
 		RestMethod method = api.getResources().get("projects").getMethods().get("predict");
 
 		JsonSchema param = new JsonSchema();
-		String projectId = "wide-river-326910";
+		String projectId = "principal-bond-329416";
 		// You should have already deployed a model and a version.
 		// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 		String modelId = "Impact";
-		String versionId = "Version2";
+		String versionId = "Version1";
 		param.set(
 				"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
 		GenericUrl url =
@@ -133,5 +144,6 @@ public class GreetingController {
 		String response = request.execute().parseAsString();
 		System.out.println(response);
 
+	}
 	}
 }
