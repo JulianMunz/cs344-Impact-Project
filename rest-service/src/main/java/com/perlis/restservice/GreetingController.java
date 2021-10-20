@@ -55,7 +55,7 @@ public class GreetingController {
 
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
-	private String path;
+
 
 	@CrossOrigin
 	@GetMapping(path = "/scrape")
@@ -88,7 +88,7 @@ public class GreetingController {
 	}
 
 
-	public ResponseEntity<Object> scrape(String url) {
+	public void scrape(String url) {
 		Document doc = null;
 		File main_file = null;
 		File header_file = null;
@@ -99,7 +99,6 @@ public class GreetingController {
 		Writer header_writer = null;
 		Writer ad_writer = null;
 		Writer dis_writer = null;
-
 
 		try {
 			main_file = new File("main.json");
@@ -255,122 +254,95 @@ public class GreetingController {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		// scraping failed
-		return null;
 	}
 
-
-
-	@GetMapping(value = "/getPredictions")
 	public void getPredictions() throws GeneralSecurityException, IOException{
-		
-		 // You can specify a credential file by providing a path to GoogleCredentials.
-  // Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-  GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
+		// You can specify a credential file by providing a path to GoogleCredentials.
+  		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+  		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
         .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-  Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+  		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
 
 
-  System.out.println("Buckets:");
-  Page<Bucket> buckets = storage.list();
-  for (Bucket bucket : buckets.iterateAll()) {
-    System.out.println(bucket.toString());
-		
-		
-		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-		Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
-
-		RestDescription api = discovery.apis().getRest("ml", "v1").execute();
-		RestMethod method = api.getResources().get("projects").getMethods().get("predict");
-
-		JsonSchema param = new JsonSchema();
-		String projectId = "principal-bond-329416";
-		// You should have already deployed a model and a version.
-		// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
-		String modelId = "Impact";
-		String versionId = "Version1";
-		param.set(
-				"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
-		GenericUrl url =
-				new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
-		System.out.println(url);
-
-		String contentType = "application/json";
-		File requestBodyFile = new File("main.json");
-		HttpContent content = new FileContent(contentType, requestBodyFile);
-		System.out.println(requestBodyFile);
-		System.out.println(content.getLength());
-		System.out.println(content);
-
-		List<String> scopes = new ArrayList<>();
-		scopes.add("https://www.googleapis.com/auth/cloud-platform");
-/*
-		GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
-		
-		*/
-		HttpRequestFactory requestFactory =
-				httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
-				
-				
-		HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
-
-		String response = request.execute().parseAsString();
-		//System.out.println(response);
+  		System.out.println("Buckets:");
+		Page<Bucket> buckets = storage.list();
+		for (Bucket bucket : buckets.iterateAll()) {
+			System.out.println(bucket.toString());
 
 
-		JSONObject json = new JSONObject(response);
+			HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+			JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+			Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
 
-		ObjectMapper mapper = new ObjectMapper();
+			RestDescription api = discovery.apis().getRest("ml", "v1").execute();
+			RestMethod method = api.getResources().get("projects").getMethods().get("predict");
 
-		JsonNode rootNode = mapper.readTree(response);
+			JsonSchema param = new JsonSchema();
+			String projectId = "principal-bond-329416";
+			// You should have already deployed a model and a version.
+			// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
+			String modelId = "Impact";
+			String versionId = "Version1";
+			param.set(
+					"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
+			GenericUrl url = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
+			System.out.println(url);
+			String contentType = "application/json";
+			File requestBodyFile = new File("main.json");
+			HttpContent content = new FileContent(contentType, requestBodyFile);
+			System.out.println(requestBodyFile);
+			System.out.println(content.getLength());
+			System.out.println(content);
 
-		JsonNode root = rootNode.path("predictions");
+			List<String> scopes = new ArrayList<>();
+			scopes.add("https://www.googleapis.com/auth/cloud-platform");
+			/*
+				GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
+			*/
+			HttpRequestFactory requestFactory = httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
+			HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
 
-		int count = 0;
+			String response = request.execute().parseAsString();
+			//System.out.println(response);
 
-		// counts numbers of predictions
-		ArrayNode arrayNode = (ArrayNode) root;
-		for (int i = 0; i < arrayNode.size(); i++) {
-			JsonNode arrayElement = arrayNode.get(i);
-			for (int j = 0; j < arrayElement.size(); j++) {
-				JsonNode values = arrayElement.get("dense_1");
-			}
-			count++;
-		}
+			JSONObject json = new JSONObject(response);
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode rootNode = mapper.readTree(response);
+			JsonNode root = rootNode.path("predictions");
+			int count = 0;
 
-		// classifies as important or not based on predictions
-		String elements [] =  new String[count];
-		int k = 0;
-		for (int i = 0; i < arrayNode.size(); i++) {
-			JsonNode arrayElement = arrayNode.get(i);
-			for (int j = 0; j < arrayElement.size(); j++) {
-				JsonNode values = arrayElement.get("dense_1");
-				if( values.get(0).asDouble() > values.get(1).asDouble() ){
-					elements[k] = "maintext";
-				}else{
-					elements[k] = "none";
+			// counts numbers of predictions
+			ArrayNode arrayNode = (ArrayNode) root;
+			for (int i = 0; i < arrayNode.size(); i++) {
+				JsonNode arrayElement = arrayNode.get(i);
+				for (int j = 0; j < arrayElement.size(); j++) {
+					JsonNode values = arrayElement.get("dense_1");
 				}
-				k++;
+				count++;
 			}
+
+			// classifies as important or not based on predictions
+			String elements[] = new String[count];
+			int k = 0;
+			for (int i = 0; i < arrayNode.size(); i++) {
+				JsonNode arrayElement = arrayNode.get(i);
+				for (int j = 0; j < arrayElement.size(); j++) {
+					JsonNode values = arrayElement.get("dense_1");
+					if (values.get(0).asDouble() > values.get(1).asDouble()) {
+						elements[k] = "maintext";
+					} else {
+						elements[k] = "none";
+					}
+					k++;
+				}
+			}
+			System.out.println(count);
+
+			for (int i = 0; i < elements.length; i++) {
+				System.out.println(elements[i]);
+			}
+
 		}
-		System.out.println(count);
-
-		for(int i =0 ;i < elements.length;i++){
-			System.out.println(elements[i]);
-		}
-
-
-
-
-
-
-
-
-
-
-
-	}
 	}
 }
