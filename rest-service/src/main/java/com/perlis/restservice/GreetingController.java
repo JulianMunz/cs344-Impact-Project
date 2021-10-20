@@ -256,21 +256,24 @@ public class GreetingController {
 		}
 	}
 
-	public void getPredictions() throws GeneralSecurityException, IOException{
+
+	@CrossOrigin
+	@GetMapping(value = "/getPredictions")
+	public String[] getPredictions() throws GeneralSecurityException, IOException{
+				
 		// You can specify a credential file by providing a path to GoogleCredentials.
-  		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-  		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/MY CODE FOR PROJECT/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
-        .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-  		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:/Users/User/Documents/Stellies/2021/Computer Science 344/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
+				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
+		String elements [] = null;
 
-
-  		System.out.println("Buckets:");
+		System.out.println("Buckets:");
 		Page<Bucket> buckets = storage.list();
 		for (Bucket bucket : buckets.iterateAll()) {
 			System.out.println(bucket.toString());
-
-
+				
 			HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 			JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 			Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
@@ -286,8 +289,10 @@ public class GreetingController {
 			String versionId = "Version1";
 			param.set(
 					"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
-			GenericUrl url = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
+			GenericUrl url =
+					new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
 			System.out.println(url);
+
 			String contentType = "application/json";
 			File requestBodyFile = new File("main.json");
 			HttpContent content = new FileContent(contentType, requestBodyFile);
@@ -298,18 +303,27 @@ public class GreetingController {
 			List<String> scopes = new ArrayList<>();
 			scopes.add("https://www.googleapis.com/auth/cloud-platform");
 			/*
-				GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
+			GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
+			
 			*/
-			HttpRequestFactory requestFactory = httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
+			HttpRequestFactory requestFactory =
+					httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
+					
+					
 			HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
 
 			String response = request.execute().parseAsString();
 			//System.out.println(response);
 
+
 			JSONObject json = new JSONObject(response);
+
 			ObjectMapper mapper = new ObjectMapper();
+
 			JsonNode rootNode = mapper.readTree(response);
+
 			JsonNode root = rootNode.path("predictions");
+
 			int count = 0;
 
 			// counts numbers of predictions
@@ -323,15 +337,15 @@ public class GreetingController {
 			}
 
 			// classifies as important or not based on predictions
-			String elements[] = new String[count];
+			elements =  new String[count];
 			int k = 0;
 			for (int i = 0; i < arrayNode.size(); i++) {
 				JsonNode arrayElement = arrayNode.get(i);
 				for (int j = 0; j < arrayElement.size(); j++) {
 					JsonNode values = arrayElement.get("dense_1");
-					if (values.get(0).asDouble() > values.get(1).asDouble()) {
+					if( values.get(0).asDouble() > values.get(1).asDouble() ){
 						elements[k] = "maintext";
-					} else {
+					}else{
 						elements[k] = "none";
 					}
 					k++;
@@ -339,10 +353,11 @@ public class GreetingController {
 			}
 			System.out.println(count);
 
-			for (int i = 0; i < elements.length; i++) {
-				System.out.println(elements[i]);
-			}
+			// for(int i =0 ;i < elements.length;i++){
+			// 	System.out.println(elements[i]);
+			// }
 
 		}
+		return elements;
 	}
 }
