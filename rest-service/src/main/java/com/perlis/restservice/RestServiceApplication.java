@@ -18,8 +18,7 @@ public class RestServiceApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/scrape").allowedOrigins("http://localhost:8080");
-				registry.addMapping("/getPredictions").allowedOrigins("http://localhost:8080");
+				registry.addMapping("/api/scrape");
 			}
 		};
 	}
