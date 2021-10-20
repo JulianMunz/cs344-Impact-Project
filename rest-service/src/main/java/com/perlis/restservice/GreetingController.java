@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.GenericUrl;
@@ -142,7 +145,59 @@ public class GreetingController {
 		HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
 
 		String response = request.execute().parseAsString();
-		System.out.println(response);
+		//System.out.println(response);
+
+
+		JSONObject json = new JSONObject(response);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode rootNode = mapper.readTree(response);
+
+		JsonNode root = rootNode.path("predictions");
+
+		int count = 0;
+
+		// counts numbers of predictions
+		ArrayNode arrayNode = (ArrayNode) root;
+		for (int i = 0; i < arrayNode.size(); i++) {
+			JsonNode arrayElement = arrayNode.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("dense_1");
+			}
+			count++;
+		}
+
+		// classifies as important or not based on predictions
+		String elements [] =  new String[count];
+		int k = 0;
+		for (int i = 0; i < arrayNode.size(); i++) {
+			JsonNode arrayElement = arrayNode.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("dense_1");
+				if( values.get(0).asDouble() > values.get(1).asDouble() ){
+					elements[k] = "maintext";
+				}else{
+					elements[k] = "none";
+				}
+				k++;
+			}
+		}
+		System.out.println(count);
+
+		for(int i =0 ;i < elements.length;i++){
+			System.out.println(elements[i]);
+		}
+
+
+
+
+
+
+
+
+
+
 
 	}
 	}
