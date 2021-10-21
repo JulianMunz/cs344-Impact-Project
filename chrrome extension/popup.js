@@ -16,15 +16,14 @@ colorDivs.addEventListener("click", async () => {
     var text = "true";
     chrome.runtime.sendMessage({run: true, data:{text}, url: window.location.href}, function(response) {
       console.log(response);
-      var all = document.querySelectorAll("*");
-      for (var i = 0, max=all.length; i < max; i++) {
-        if (response[i] == "none") {
-
-        } else {
-          all[i].style.backgroundColor = "#a5e0e4";
+      for (var i = 0, max=response.length; i < max; i++) {
+        var elements = document.getElementsByClassName(response[i]);
+        for (var k = 0, maximum = elements.length; k < maximum; k++) {
+          console.log(response[i]);
+          elements[k].style.backgroundColor = "blue";
         }
       }
-      console.log(all.length);
+      console.log(response.length);
     });
     // document.getElementById("content").style.backgroundColor = "blue";
     // document.getElementById("mw-head-base").style.backgroundColor = "yellow";

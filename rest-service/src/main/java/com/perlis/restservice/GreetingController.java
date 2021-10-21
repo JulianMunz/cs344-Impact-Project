@@ -88,7 +88,7 @@ public class GreetingController {
 	}
 
 
-	public void scrape(String url) {
+	public Elements scrape(String url) {
 		Document doc = null;
 		File main_file = null;
 		File header_file = null;
@@ -104,19 +104,19 @@ public class GreetingController {
 			main_file = new File("main.json");
 			main_writer = new FileWriter(main_file);
 			//main_writer.append("class,parnum\n");
-			main_writer.append("{instances: [");
+			main_writer.append("{\"instances\": [");
 
 			header_file = new File("header.json");
 			header_writer = new FileWriter(header_file);
-			header_writer.append("{instances: [");
+			header_writer.append("{\"instances\": [");
 
 			ad_file = new File("adbanner.json");
 			ad_writer = new FileWriter(ad_file);
-			ad_writer.append("{instances: [");
+			ad_writer.append("{\"instances\": [");
 
 			dis_file = new File("disclaimer.json");
 			dis_writer = new FileWriter(dis_file);
-			dis_writer.append("{instances: [");
+			dis_writer.append("{\"instances\": [");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -137,7 +137,6 @@ public class GreetingController {
 				//Main_Text
 				Elements paragraphs = element.select(":root > p");
 				int parnum = paragraphs.size();
-
 				main_writer
 						.append("[")
 						.append(String.valueOf(parnum))
@@ -251,27 +250,31 @@ public class GreetingController {
 			header_writer.flush();
 			ad_writer.flush();
 			dis_writer.flush();
+			return elements;
 		} catch (Exception e) {
 			System.out.println(e);
+			return null;
 		}
 	}
 
 
 	@CrossOrigin
 	@GetMapping(value = "/getPredictions")
-	public String[] getPredictions() throws GeneralSecurityException, IOException{
-				
+	public ArrayList<String> getPredictions(@RequestParam(value = "url", defaultValue = "https://www.google.com/") String page_url) throws GeneralSecurityException, IOException{
 		// You can specify a credential file by providing a path to GoogleCredentials.
 		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:/Users/User/Documents/Stellies/2021/Computer Science 344/cs344-Impact-Project/rest-service/src/main/resources/principal-bond-329416-05640e69962e.json"))
+		Elements elements = scrape(page_url);
+		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/main/resources/principal-bond-329416-05640e69962e.json"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
-		String elements [] = null;
+		String cls [] = null;
 
 		System.out.println("Buckets:");
 		Page<Bucket> buckets = storage.list();
+		ArrayList mains = new ArrayList<String>();
 		for (Bucket bucket : buckets.iterateAll()) {
+
 			System.out.println(bucket.toString());
 				
 			HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -297,7 +300,7 @@ public class GreetingController {
 			File requestBodyFile = new File("main.json");
 			HttpContent content = new FileContent(contentType, requestBodyFile);
 			System.out.println(requestBodyFile);
-			System.out.println(content.getLength());
+			//System.out.println(content.getLength());
 			System.out.println(content);
 
 			List<String> scopes = new ArrayList<>();
@@ -337,27 +340,36 @@ public class GreetingController {
 			}
 
 			// classifies as important or not based on predictions
-			elements =  new String[count];
+			
+			cls =  new String[count];
 			int k = 0;
 			for (int i = 0; i < arrayNode.size(); i++) {
 				JsonNode arrayElement = arrayNode.get(i);
 				for (int j = 0; j < arrayElement.size(); j++) {
 					JsonNode values = arrayElement.get("dense_1");
 					if( values.get(0).asDouble() > values.get(1).asDouble() ){
-						elements[k] = "maintext";
+						cls[k] = "maintext";
 					}else{
-						elements[k] = "none";
+						cls[k] = "none";
 					}
 					k++;
 				}
 			}
-			System.out.println(count);
+			count = 0;
+			for (Element element : elements) {
+				if (cls[count].equals("maintext")) {
+					System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add(element.className());
+				}
+				count++;
+			}
+
 
 			// for(int i =0 ;i < elements.length;i++){
 			// 	System.out.println(elements[i]);
 			// }
 
 		}
-		return elements;
+		return mains;
 	}
 }

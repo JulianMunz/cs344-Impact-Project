@@ -19,6 +19,7 @@ public class RestServiceApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/api/scrape");
+				registry.addMapping("/api/getPredictions");
 			}
 		};
 	}
