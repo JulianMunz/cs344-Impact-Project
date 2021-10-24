@@ -264,7 +264,7 @@ public class GreetingController {
 		// You can specify a credential file by providing a path to GoogleCredentials.
 		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
 		Elements elements = scrape(page_url);
-		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/main/resources/principal-bond-329416-05640e69962e.json"))
+		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/main/resources/supple-lock-330011-f7dbb5e144bf.json"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
@@ -289,7 +289,7 @@ public class GreetingController {
 			// You should have already deployed a model and a version.
 			// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 			String modelId = "Impact";
-			String versionId = "Version1";
+			String versionId = "Version";
 			param.set(
 					"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
 			GenericUrl url =
