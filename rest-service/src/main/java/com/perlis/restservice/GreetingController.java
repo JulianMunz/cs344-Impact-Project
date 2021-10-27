@@ -264,7 +264,7 @@ public class GreetingController {
 		// You can specify a credential file by providing a path to GoogleCredentials.
 		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
 		Elements elements = scrape(page_url);
-		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/main/resources/supple-lock-330011-f7dbb5e144bf.json"))
+		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/supple-lock-330011-f7dbb5e144bf.json"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
