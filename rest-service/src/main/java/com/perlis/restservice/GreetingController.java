@@ -285,7 +285,7 @@ public class GreetingController {
 			RestMethod method = api.getResources().get("projects").getMethods().get("predict");
 
 			JsonSchema param = new JsonSchema();
-			String projectId = "supple-lock-330011-f7dbb5e144bf";
+			String projectId = "supple-lock-330011";
 			// You should have already deployed a model and a version.
 			// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 			String modelId = "Impact";
