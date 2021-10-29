@@ -3,9 +3,10 @@ body {
   background-color: #507683;
   color: #FFFFFF;
   font-family: Arial, sans-serif;
+  margin-top: 20px;
   max-width: 100%;
   min-height: 130px;
-  min-width: 300px; 
+  min-width: 250px;
   position: relative;
   text-align: center;
   vertical-align: middle;
@@ -26,4 +27,29 @@ body {
 .button1:hover {
   background-color: #364F58;
   color: white;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 0;
+}
+
+li {
+  background-color: #6F929F;
+  border: 1px solid #5F838F;
+  list-style-type: none;
+  margin-top: -1px;
+  padding: 12px;
+}
+
+li:hover{
+  background-color: #364F58;
+  border: 1px solid #5F838F;
+  color: white;
+  list-style-type: none;
+  margin-top: -1px;
+  padding: 12px;
 }
