@@ -36,7 +36,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 
 import java.util.ArrayList;
 
-
 import com.google.api.gax.paging.Page;
 import com.google.auth.appengine.AppEngineCredentials;
 import com.google.auth.oauth2.ComputeEngineCredentials;
@@ -48,14 +47,12 @@ import com.google.common.collect.Lists;
 
 import java.io.IOException;
 
-
 @RestController
 @RequestMapping("/api")
 public class GreetingController {
 
 	private static final String template = "Hello, %s!";
 	private final AtomicLong counter = new AtomicLong();
-
 
 	@CrossOrigin
 	@GetMapping(path = "/scrape")
@@ -87,15 +84,16 @@ public class GreetingController {
 		return null;
 	}
 
-
 	public Elements scrape(String url) {
 		Document doc = null;
 		File main_file = null;
+		File footer_file = null;
 		File header_file = null;
 		File ad_file = null;
 		File dis_file = null;
 
 		Writer main_writer = null;
+		Writer footer_writer = null;
 		Writer header_writer = null;
 		Writer ad_writer = null;
 		Writer dis_writer = null;
@@ -103,8 +101,12 @@ public class GreetingController {
 		try {
 			main_file = new File("main.json");
 			main_writer = new FileWriter(main_file);
-			//main_writer.append("class,parnum\n");
+			// main_writer.append("class,parnum\n");
 			main_writer.append("{\"instances\": [");
+
+			footer_file = new File("footer.json");
+			footer_writer = new FileWriter(footer_file);
+			footer_writer.append("{\"instances\": [");
 
 			header_file = new File("header.json");
 			header_writer = new FileWriter(header_file);
@@ -127,126 +129,116 @@ public class GreetingController {
 			Document document = doc;
 			Elements elements = document.getAllElements();
 			int grandtotal = elements.size();
+			System.out.println(""+grandtotal);
 			int count = 0;
 			int depth = 0;
 			for (Element element : elements) {
 				depth++;
 				count++;
-				if (element.tagName() == "html") depth = 0;
+				if (element.tagName() == "html")
+					depth = 0;
 				String clname = element.className();
-				//Main_Text
+				// Main_Text
 				Elements paragraphs = element.select(":root > p");
 				int parnum = paragraphs.size();
-				main_writer
-						.append("[")
-						.append(String.valueOf(parnum))
-						.append("]");
+				if (parnum > 30)
+					parnum = 30;
+				parnum = parnum * parnum;
+				main_writer.append("[").append(String.valueOf(parnum)).append("]");
 				if (count != elements.size())
 					main_writer.append(",");
 				else
 					main_writer.append("]}");
 
-				//Header
+				// Header
 				int score = 0;
 				if (element.tagName() == "header") {
-					score = 1000;
+					score = 1;
 				}
-				if (clname.contains("header")) score+=100;
-				Elements children = element.children();
-
-				for (Element child : children) {
-					if (child.className().contains("logo")) {
-						score++;
-						break;
-					}
-				}
-				for (Element child : children) {
-					if (child.className().contains("nav")) {
-						score+=10;
-						break;
-					}
-				}
-				header_writer
-						.append("[")
-						.append(String.valueOf(score))
-						.append("]");
+				if (clname.contains("header"))
+					score = 1;
+				header_writer.append("[").append(String.valueOf(score)).append("]");
 				if (count != elements.size())
 					header_writer.append(",");
 				else
 					header_writer.append("]}");
 
-				//Footer
-				//WIP
-				if (element.tagName() == "footer"
-						|| (element.className().contains("footer")
-						&& !element.className().contains("above"))) {
-					int nothing = 0;
+				// Footer
+				int footerscore = 0;
+				if (element.tagName() == "footer") {
+					footerscore = 1;
+				}
+				footer_writer.append("[").append(String.valueOf(footerscore)).append("]");
+				if (count != elements.size())
+					footer_writer.append(",");
+				else
+					footer_writer.append("]}");
+
+				// Adbanner
+				int adscore = 0;
+				if (element.tagName() == "aside") {
+					adscore = 1;
+				}
+				if (clname.contains("sidebar")) {
+					adscore = 1;
 				}
 
-
-				//Adbanner
-				int numdeals = 0;
-				int numlinks = 0;
-				int thisdepth = 0;
-				int total = 0;
-				Elements deepchildren = element.select(":root *");
-				total = deepchildren.size();
-				if (total != 0) {
-					for (Element deepchild : deepchildren) {
-						String text = deepchild.ownText();
-						if ((text.matches("(.*)[0-9]+(.*)points(.*)")
-								|| text.matches("(.*)[0-9]+(.*)Points(.*)")
-								|| text.matches("(.*)[0-9]+(.*)miles(.*)")
-								|| text.matches("(.*)[0-9]+(.*)Miles(.*)"))
-								&& text.length() < 60)
-						{
-							numdeals++;
-						}
-					}
-
-					Elements childlinks = element.select(":root a");
-					numlinks = childlinks.size();
-					thisdepth = depth;
-				}
-				else total = 1;
-
-				ad_writer
-						.append("[")
-						.append(String.valueOf((float)numdeals/(float)total))
-						.append(",")
-						.append(String.valueOf((float)numlinks/(float)total))
-						.append(",")
-						.append(String.valueOf((float)thisdepth/(float)grandtotal))
-						.append("]");
+				ad_writer.append("[").append(String.valueOf(adscore)).append("]");
 				if (count != elements.size())
 					ad_writer.append(",");
 				else
 					ad_writer.append("]}");
 
-
-				//Disclaimer
+				// Disclaimer
 				int discore = 0;
-				if (clname.contains("disclosure") || clname.contains("disclaimer")) {
-					discore = 10;
-				}
-				String distext = element.ownText();
-				if (distext.contains("advertis")) discore++;
-				if (distext.contains("partner")) discore++;
-				if (distext.contains("links")) discore++;
-				if (distext.contains("offer")) discore++;
 
-				dis_writer
-						.append("[")
-						.append(String.valueOf(discore))
-						.append("]");
+				String distext = element.ownText();
+				if (distext.toLowerCase().contains("advertis"))
+					discore++;
+				if (distext.toLowerCase().contains("partner"))
+					discore++;
+				if (distext.toLowerCase().contains("links"))
+					discore++;
+				if (distext.toLowerCase().contains("offer"))
+					discore++;
+				if (distext.toLowerCase().contains("listed"))
+					discore++;
+				if (distext.toLowerCase().contains("opinions"))
+					discore++;
+				if (distext.toLowerCase().contains("terms apply"))
+					discore++;
+				if (distext.toLowerCase().contains("compensat"))
+					discore++;
+				if (distext.toLowerCase().contains("refer"))
+					discore++;
+				if (distext.toLowerCase().contains("products"))
+					discore++;
+				if (distext.toLowerCase().contains("reviewed"))
+					discore++;
+				if (distext.toLowerCase().contains("approved"))
+					discore++;
+				if (distext.toLowerCase().contains("endorsed"))
+					discore++;
+
+				if (discore > 2)
+					discore = 1;
+				else
+					discore = 0;
+
+				if (clname.contains("disclosure") || clname.contains("disclaimer")) {
+					discore = 1;
+				}
+
+				dis_writer.append("[").append(String.valueOf(discore)).append("]");
 				if (count != elements.size())
 					dis_writer.append(",");
 				else
 					dis_writer.append("]}");
 
 			}
-
+			System.out.println(""+count);
 			main_writer.flush();
+			footer_writer.flush();
 			header_writer.flush();
 			ad_writer.flush();
 			dis_writer.flush();
@@ -257,119 +249,232 @@ public class GreetingController {
 		}
 	}
 
-
 	@CrossOrigin
 	@GetMapping(value = "/getPredictions")
-	public ArrayList<String> getPredictions(@RequestParam(value = "url", defaultValue = "https://www.google.com/") String page_url) throws GeneralSecurityException, IOException{
-		// You can specify a credential file by providing a path to GoogleCredentials.
-		// Otherwise credentials are read from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
-		Elements elements = scrape(page_url);
-		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/home/diego/Documents/CS 344 PROJECT/cs344-Impact-Project/rest-service/src/main/resources/supple-lock-330011-f7dbb5e144bf.json"))
+	public ArrayList<String> getPredictions(@RequestParam(value="url",defaultValue="https://www.google.com/")String s_url) throws GeneralSecurityException, IOException {
+		// GCP credentials
+		Elements elements = scrape(s_url);
+		System.out.println(s_url);
+		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(
+				"src/main/resources/spiritual-grin-330405-4657ddde4e1b.json"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
-		String cls [] = null;
+		String cls[] = null;
 
-		System.out.println("Buckets:");
-		Page<Bucket> buckets = storage.list();
 		ArrayList mains = new ArrayList<String>();
-		for (Bucket bucket : buckets.iterateAll()) {
+		//String[] sections = { "main", "adbanner", "header", "footer", "disclaimer" };
+		//int index = 0;
 
-			System.out.println(bucket.toString());
-				
-			HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-			JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-			Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
+		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+		Discovery discovery = new Discovery.Builder(httpTransport, jsonFactory, null).build();
+		RestDescription api = discovery.apis().getRest("ml", "v1").execute();
+		RestMethod method = api.getResources().get("projects").getMethods().get("predict");
+		JsonSchema param = new JsonSchema();
+		String projectId = "spiritual-grin-330405";
+		// You should have already deployed a model and a version.
+		// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 
-			RestDescription api = discovery.apis().getRest("ml", "v1").execute();
-			RestMethod method = api.getResources().get("projects").getMethods().get("predict");
+		String modelId1 = "maintext";
+		String versionId_MainText = "maintext";
+		param.set("name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId1, versionId_MainText));
+		GenericUrl url_maintext = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
 
-			JsonSchema param = new JsonSchema();
-			String projectId = "supple-lock-330011";
-			// You should have already deployed a model and a version.
-			// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
-			String modelId = "Impact";
-			String versionId = "Version";
-			param.set(
-					"name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId, versionId));
-			GenericUrl url =
-					new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
-			System.out.println(url);
+		String modelId2 = "adbanner";
+		String versionId_adBanner = "adbanner";
+		param.set("name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId2, versionId_adBanner));
+		GenericUrl url_adbanner = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
 
-			String contentType = "application/json";
-			File requestBodyFile = new File("main.json");
-			HttpContent content = new FileContent(contentType, requestBodyFile);
-			System.out.println(requestBodyFile);
-			//System.out.println(content.getLength());
-			System.out.println(content);
+		String modelId3 = "header";
+		String versionId_header = "header";
+		param.set("name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId3, versionId_header));
+		GenericUrl url_header = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
 
-			List<String> scopes = new ArrayList<>();
-			scopes.add("https://www.googleapis.com/auth/cloud-platform");
-			/*
-			GoogleCredentials credential = GoogleCredentials.getApplicationDefault().createScoped(scopes);
-			
-			*/
-			HttpRequestFactory requestFactory =
-					httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
-					
-					
-			HttpRequest request = requestFactory.buildRequest(method.getHttpMethod(), url, content);
+		String modelId4 = "footer";
+		String versionId_footer = "footer";
+		param.set("name", String.format("projects/%s/models/%s/versions/%s", projectId, modelId4, versionId_footer));
+		GenericUrl url_footer = new GenericUrl(UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
 
-			String response = request.execute().parseAsString();
-			//System.out.println(response);
+		String modelId5 = "disclaimer";
+		String versionId_disclaimer = "disclaimer";
+		param.set("name",
+				String.format("projects/%s/models/%s/versions/%s", projectId, modelId5, versionId_disclaimer));
+		GenericUrl url_disclaimer = new GenericUrl(
+				UriTemplate.expand(api.getBaseUrl() + method.getPath(), param, true));
+
+		// Read json file that is going to be sent to GCP
+		String contentType = "application/json";
+		File requestBodyFileForMaintext = new File("main.json");
+		File requestBodyFileForadBanner = new File("adbanner.json");
+		File requestBodyFileForheader = new File("header.json");
+		File requestBodyFileForfooter = new File("footer.json");
+		File requestBodyFileFordisclaimer = new File("disclaimer.json");
+
+		HttpContent contentForMainText = new FileContent(contentType, requestBodyFileForMaintext);
+		HttpContent contentForadBanner = new FileContent(contentType, requestBodyFileForadBanner);
+		HttpContent contentForheader = new FileContent(contentType, requestBodyFileForheader);
+		HttpContent contentForfooter = new FileContent(contentType, requestBodyFileForfooter);
+		HttpContent contentFordisclaimer = new FileContent(contentType, requestBodyFileFordisclaimer);
+
+		List<String> scopes = new ArrayList<>();
+		scopes.add("https://www.googleapis.com/auth/cloud-platform");
+		/*
+		 * GoogleCredentials credential =
+		 * GoogleCredentials.getApplicationDefault().createScoped(scopes);
+		 */
+
+		// Request sent to GCP
+		HttpRequestFactory requestFactory = httpTransport.createRequestFactory(new HttpCredentialsAdapter(credentials));
+		HttpRequest requestForMainText = requestFactory.buildRequest(method.getHttpMethod(), url_maintext,
+				contentForMainText);
+		HttpRequest requestForadBanner = requestFactory.buildRequest(method.getHttpMethod(), url_adbanner,
+				contentForadBanner);
+		HttpRequest requestForheader = requestFactory.buildRequest(method.getHttpMethod(), url_header,
+				contentForheader);
+		HttpRequest requestForfooter = requestFactory.buildRequest(method.getHttpMethod(), url_footer,
+				contentForfooter);
+		HttpRequest requestFordisclaimer = requestFactory.buildRequest(method.getHttpMethod(), url_disclaimer,
+				contentFordisclaimer);
+
+		String responseForMainText = requestForMainText.execute().parseAsString();
+		String responseForadBanner = requestForadBanner.execute().parseAsString();
+		String responseForheader = requestForheader.execute().parseAsString();
+		String responseForfooter = requestForfooter.execute().parseAsString();
+		String responseFordisclaimer = requestFordisclaimer.execute().parseAsString();
 
 
-			JSONObject json = new JSONObject(response);
+		// converts results from gcp to json
+		ObjectMapper mapper1 = new ObjectMapper();
+		JsonNode rootNode1 = mapper1.readTree(responseForMainText);
+		JsonNode root1 = rootNode1.path("predictions");
+		int countForMainText = 0;
 
-			ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper2 = new ObjectMapper();
+		JsonNode rootNode2 = mapper2.readTree(responseForadBanner);
+		JsonNode root2 = rootNode2.path("predictions");
+		int countForadBanner = 0;
 
-			JsonNode rootNode = mapper.readTree(response);
+		ObjectMapper mapper3 = new ObjectMapper();
+		JsonNode rootNode3 = mapper3.readTree(responseForheader);
+		JsonNode root3 = rootNode3.path("predictions");
+		int countForHeader = 0;
 
-			JsonNode root = rootNode.path("predictions");
+
+		ObjectMapper mapper4 = new ObjectMapper();
+		JsonNode rootNode4 = mapper4.readTree(responseForfooter);
+		JsonNode root4 = rootNode4.path("predictions");
+		int countForfooter = 0;
+
+
+		ObjectMapper mapper5 = new ObjectMapper();
+		JsonNode rootNode5 = mapper5.readTree(responseFordisclaimer);
+		JsonNode root5 = rootNode5.path("predictions");
+		int countFordisclaimer = 0;
+
+		// counts number of predictions - Maintext
+		ArrayNode arrayNode1 = (ArrayNode) root1;
+		ArrayNode arrayNode2 = (ArrayNode) root2;
+		ArrayNode arrayNode3 = (ArrayNode) root3;
+		ArrayNode arrayNode4 = (ArrayNode) root4;
+		ArrayNode arrayNode5 = (ArrayNode) root5;
+		
+		// classifies as important or not based on predictions
+		cls = new String[countForMainText + countForadBanner + countForHeader + countForfooter + countFordisclaimer];
+		System.out.println(countForMainText);
+		System.out.println(countForadBanner);
+		System.out.println(countForHeader);
+		System.out.println(countForfooter);
+		System.out.println(countFordisclaimer);
+	//cls = new String[countForMainText + countForHeader  + countFordisclaimer];
+
+		//initialize
+		for (int i = 0; i < cls.length; i++)
+			cl[i] = "none";
+
+		// maintext
+		for (int i = 0; i < arrayNode1.size(); i++) {
+			JsonNode arrayElement = arrayNode1.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("dense_1");
+				if (values.get(0).asDouble() > values.get(1).asDouble())
+					cls[j] = "main";
+			}
+		}
+
+		// adbanner
+		for (int i = 0; i < arrayNode2.size(); i++) {
+			JsonNode arrayElement = arrayNode2.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("softmax_2");
+				if (values.get(0).asDouble() > values.get(1).asDouble())
+					cls[j] = "adbanner";
+			}
+		}
+
+		// header
+		for (int i = 0; i < arrayNode3.size(); i++) {
+			JsonNode arrayElement = arrayNode3.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("softmax_1");
+				if (values.get(0).asDouble() > values.get(1).asDouble())
+					cls[j] = "header";
+			}
+		}
+
+		// footer
+		for (int i = 0; i < arrayNode4.size(); i++) {
+			JsonNode arrayElement = arrayNode4.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("softmax_2");
+				if (values.get(0).asDouble() > values.get(1).asDouble())
+					cls[j] = "footer";
+			}
+		}
+
+		// disclaimer
+		for (int i = 0; i < arrayNode5.size(); i++) {
+			JsonNode arrayElement = arrayNode5.get(i);
+			for (int j = 0; j < arrayElement.size(); j++) {
+				JsonNode values = arrayElement.get("softmax");
+				if (values.get(0).asDouble() > values.get(1).asDouble())
+					cls[j] = "disclaimer";
+			}
+		}
+
 
 			int count = 0;
-
-			// counts numbers of predictions
-			ArrayNode arrayNode = (ArrayNode) root;
-			for (int i = 0; i < arrayNode.size(); i++) {
-				JsonNode arrayElement = arrayNode.get(i);
-				for (int j = 0; j < arrayElement.size(); j++) {
-					JsonNode values = arrayElement.get("dense_1");
-				}
-				count++;
-			}
-
-			// classifies as important or not based on predictions
-			
-			cls =  new String[count];
-			int k = 0;
-			for (int i = 0; i < arrayNode.size(); i++) {
-				JsonNode arrayElement = arrayNode.get(i);
-				for (int j = 0; j < arrayElement.size(); j++) {
-					JsonNode values = arrayElement.get("dense_1");
-					if( values.get(0).asDouble() > values.get(1).asDouble() ){
-						cls[k] = "maintext";
-					}else{
-						cls[k] = "none";
-					}
-					k++;
-				}
-			}
-			count = 0;
 			for (Element element : elements) {
-				if (cls[count].equals("maintext")) {
-					System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add(element.className());
+				if (cls[count].equals("main")) {
+					//System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add("1"+element.className());
+				}
+				if (cls[count].equals("footer")) {
+					//System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add("2"+element.className());
+				}
+				if (cls[count].equals("header")) {
+					//System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add("3"+element.className());
+				}
+				if (cls[count].equals("adbanner")) {
+					//System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add("4"+element.className());
+				}
+				if (cls[count].equals("disclaimer")) {
+					//System.out.println("ELEMENT: " + element.outerHtml());
+					mains.add("5"+element.className());
 				}
 				count++;
 			}
 
+			
+		/*
+		 for (int i = 0; i < cls.length; i++) {
+		 System.out.println(cls[i]);
+		 }
+*/
 
-			// for(int i =0 ;i < elements.length;i++){
-			// 	System.out.println(elements[i]);
-			// }
-
-		}
 		return mains;
 	}
 }
