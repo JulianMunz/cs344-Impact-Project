@@ -256,7 +256,7 @@ public class GreetingController {
 		Elements elements = scrape(s_url);
 		System.out.println(s_url);
 		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(
-				"src/main/resources/spiritual-grin-330405-4657ddde4e1b.json"))
+				"src/main/resources/"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
@@ -272,7 +272,7 @@ public class GreetingController {
 		RestDescription api = discovery.apis().getRest("ml", "v1").execute();
 		RestMethod method = api.getResources().get("projects").getMethods().get("predict");
 		JsonSchema param = new JsonSchema();
-		String projectId = "spiritual-grin-330405";
+		String projectId = "";
 		// You should have already deployed a model and a version.
 		// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 
