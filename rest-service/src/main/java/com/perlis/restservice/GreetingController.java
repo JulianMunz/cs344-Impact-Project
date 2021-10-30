@@ -46,7 +46,6 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.common.collect.Lists;
 
 import java.io.IOException;
-
 @RestController
 @RequestMapping("/api")
 public class GreetingController {
@@ -137,7 +136,10 @@ public class GreetingController {
 				count++;
 				if (element.tagName() == "html")
 					depth = 0;
+
 				String clname = element.className();
+				
+
 				// Main_Text
 				Elements paragraphs = element.select(":root > p");
 				int parnum = paragraphs.size();
@@ -256,11 +258,11 @@ public class GreetingController {
 		Elements elements = scrape(s_url);
 		System.out.println(s_url);
 		GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(
-				"src/main/resources/"))
+				"src/main/resources/spiritual-grin-330405-4657ddde4e1b.json"))
 				.createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 
-		String cls[] = null;
+		String cls[] = new String[elements.size()];
 
 		ArrayList mains = new ArrayList<String>();
 		//String[] sections = { "main", "adbanner", "header", "footer", "disclaimer" };
@@ -272,7 +274,7 @@ public class GreetingController {
 		RestDescription api = discovery.apis().getRest("ml", "v1").execute();
 		RestMethod method = api.getResources().get("projects").getMethods().get("predict");
 		JsonSchema param = new JsonSchema();
-		String projectId = "";
+		String projectId = "spiritual-grin-330405";
 		// You should have already deployed a model and a version.
 		// For reference, see https://cloud.google.com/ml-engine/docs/deploying-models.
 
@@ -378,19 +380,16 @@ public class GreetingController {
 		ArrayNode arrayNode3 = (ArrayNode) root3;
 		ArrayNode arrayNode4 = (ArrayNode) root4;
 		ArrayNode arrayNode5 = (ArrayNode) root5;
+
+		
+		
 		
 		// classifies as important or not based on predictions
-		cls = new String[countForMainText + countForadBanner + countForHeader + countForfooter + countFordisclaimer];
-		System.out.println(countForMainText);
-		System.out.println(countForadBanner);
-		System.out.println(countForHeader);
-		System.out.println(countForfooter);
-		System.out.println(countFordisclaimer);
 	//cls = new String[countForMainText + countForHeader  + countFordisclaimer];
 
 		//initialize
 		for (int i = 0; i < cls.length; i++)
-			cl[i] = "none";
+			cls[i] = "none";
 
 		// maintext
 		for (int i = 0; i < arrayNode1.size(); i++) {
@@ -398,7 +397,8 @@ public class GreetingController {
 			for (int j = 0; j < arrayElement.size(); j++) {
 				JsonNode values = arrayElement.get("dense_1");
 				if (values.get(0).asDouble() > values.get(1).asDouble())
-					cls[j] = "main";
+					cls[i] = "main";
+					
 			}
 		}
 
@@ -408,7 +408,7 @@ public class GreetingController {
 			for (int j = 0; j < arrayElement.size(); j++) {
 				JsonNode values = arrayElement.get("softmax_2");
 				if (values.get(0).asDouble() > values.get(1).asDouble())
-					cls[j] = "adbanner";
+					cls[i] = "adbanner";
 			}
 		}
 
@@ -418,7 +418,7 @@ public class GreetingController {
 			for (int j = 0; j < arrayElement.size(); j++) {
 				JsonNode values = arrayElement.get("softmax_1");
 				if (values.get(0).asDouble() > values.get(1).asDouble())
-					cls[j] = "header";
+					cls[i] = "header";
 			}
 		}
 
@@ -428,7 +428,7 @@ public class GreetingController {
 			for (int j = 0; j < arrayElement.size(); j++) {
 				JsonNode values = arrayElement.get("softmax_2");
 				if (values.get(0).asDouble() > values.get(1).asDouble())
-					cls[j] = "footer";
+					cls[i] = "footer";
 			}
 		}
 
@@ -438,35 +438,49 @@ public class GreetingController {
 			for (int j = 0; j < arrayElement.size(); j++) {
 				JsonNode values = arrayElement.get("softmax");
 				if (values.get(0).asDouble() > values.get(1).asDouble())
-					cls[j] = "disclaimer";
+					cls[i] = "disclaimer";
 			}
 		}
 
 
 			int count = 0;
 			for (Element element : elements) {
+				String clname = element.className();
+				Element par = element;
+				while (clname == "") {
+					par = par.parent();
+					if (par == null) break;
+					clname = par.className();
+
+				}
 				if (cls[count].equals("main")) {
 					//System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add("1"+element.className());
+					mains.add(clname);
+					mains.add("1");
 				}
 				if (cls[count].equals("footer")) {
 					//System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add("2"+element.className());
+					mains.add(clname);
+					mains.add("2");
 				}
 				if (cls[count].equals("header")) {
 					//System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add("3"+element.className());
+					mains.add(clname);
+					mains.add("3");
 				}
 				if (cls[count].equals("adbanner")) {
 					//System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add("4"+element.className());
+					mains.add(clname);
+					mains.add("4");
 				}
 				if (cls[count].equals("disclaimer")) {
 					//System.out.println("ELEMENT: " + element.outerHtml());
-					mains.add("5"+element.className());
+					mains.add(clname);
+					mains.add("5");
 				}
 				count++;
 			}
+			System.out.println(count);
 
 			
 		/*
