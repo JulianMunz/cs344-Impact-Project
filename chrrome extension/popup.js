@@ -47,6 +47,14 @@ colorDivs.addEventListener("click", async () => {
 
       var footers = document.getElementsByTagName('footer');
       for (i = 0; i < footers.length; i++) {
+        var children = footers[i].childNodes;
+        for (j = 0; j < children.length; j++) {
+          try {
+            children[j].style.backgroundColor = "#F4CA81";
+          } catch(err) {
+
+          }
+        }
         footers[i].style.backgroundColor = "#F4CA81";
       }
       console.log(response.length);
