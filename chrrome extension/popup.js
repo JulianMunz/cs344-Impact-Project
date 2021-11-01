@@ -22,6 +22,12 @@ colorDivs.addEventListener("click", async () => {
         for (var k = 0, maximum = elements.length; k < maximum; k++) {
           console.log(response[i]);
           var colour = "#81F3F4"
+          if (maximum > 1) {
+            if (response[i] == "1") {
+              colour = "#81F3F4";
+              break;
+            }
+          }
           if (response[i] == "1") {
             colour = "#81F3F4";
           } else if (response[i] == "2") {
@@ -36,8 +42,12 @@ colorDivs.addEventListener("click", async () => {
           elements[k].style.backgroundColor = colour;
           // document.getElementById("list").innerHTML += 
           //   "<li>" + response[i] + "</li>";
-          break;
         }
+      }
+
+      var footers = document.getElementsByTagName('footer');
+      for (i = 0; i < footers.length; i++) {
+        footers[i].style.backgroundColor = "#F4CA81";
       }
       console.log(response.length);
     });
