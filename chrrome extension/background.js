@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
         return;
       }
       response.json().then(function(returned_data) {
-        //console.log(returned_data);
+        console.log(returned_data);
         sendResponse(returned_data)
       });
     });

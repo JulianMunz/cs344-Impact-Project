@@ -1,5 +1,9 @@
 
 let colorDivs = document.getElementById("colorDivs");
+// var globalwind = { labels: [], myResponse: new Response() };
+//window.labels = [];
+//globalResponse = null;
+//window.myResponse = new Response();
 
 colorDivs.addEventListener("click", async () => {
   Hide();
@@ -8,6 +12,7 @@ colorDivs.addEventListener("click", async () => {
       target: { tabId: tab.id },
       function: showColoring,
     });
+  PopulateList();
   });
 
   // The body of this function will be executed as a content script inside the
@@ -16,6 +21,7 @@ colorDivs.addEventListener("click", async () => {
     var text = "true";
     chrome.runtime.sendMessage({run: true, data:{text}, url: window.location.href}, function(response) {
       console.log(response);
+      //globalwind.myResponse = response;
       for (var i = 0, max=response.length; i < max; i++) {
         var elements = document.getElementsByClassName(response[i]);
         i++;
@@ -30,18 +36,28 @@ colorDivs.addEventListener("click", async () => {
           }
           if (response[i] == "1") {
             colour = "#81F3F4";
+            //globalwind.labels.push("hi");
+            //document.getElementById("list").innerHTML +=  "<li>1</li>";
           } else if (response[i] == "2") {
             colour = "#F4CA81";
+            //globalwind.labels.push("hey");
+            //document.getElementById("list").innerHTML +=  "<li>2</li>";
           } else if (response[i] == "3") {
             colour = "#72E574";
+            //globalwind.labels.push("hey");
+            //document.getElementById("list").innerHTML +=  "<li>3</li>";
           } else if (response[i] == "4") {
             colour = "#CE2E3E";
+            //globalwind.labels.push("hey");
+            //labels.push("4");
+            //document.getElementById("list").innerHTML +=  "<li>4</li>";
           } else if (response[i] == "5") {
             colour = "#9E2CCE";
+            //globalwind.labels.push("hey");
+            //labels.push("5");
+            //document.getElementById("list").innerHTML +=  "<li>5</li>";
           }
           elements[k].style.backgroundColor = colour;
-          // document.getElementById("list").innerHTML += 
-          //   "<li>" + response[i] + "</li>";
         }
       }
 
@@ -59,18 +75,48 @@ colorDivs.addEventListener("click", async () => {
       }
       console.log(response.length);
     });
-
-    // document.getElementById("content").style.backgroundColor = "blue";
-    // document.getElementById("mw-head-base").style.backgroundColor = "yellow";
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve('resolved');
+      }, 12000);
+    });
   }
 
   function Hide() {
-    document.getElementById("list").innerHTML += 
-        "<li>Adele</li>";
-    document.getElementById("list").innerHTML += 
-        "<li>bdele</li>";
-    document.getElementById("list").innerHTML += 
-        "<li>Ab</li>";
+    document.getElementById("loadingdiv").innerHTML += 
+        "<p id=loading.. > Loading...</p>";
+     document.getElementById("loadingdiv").innerHTML += 
+        "<div id=loading class=\"loader\"></div>";
+    // document.getElementById("list").innerHTML += 
+    //     "<li>bdele</li>";
+    // document.getElementById("list").innerHTML += 
+    //     "<li>Ab</li>";
     document.getElementById("paragraph").style.display = "none";
     document.getElementById("colorDivs").style.display = "none";
   }
+
+  async function PopulateList(){
+    const result = await showColoring();
+    document.getElementById("loadingdiv").style.display = "none";
+    document.getElementById("list").innerHTML += 
+      "<li id=main>Main</li>";
+    document.getElementById("list").innerHTML += 
+      "<li id=footer>Footer</li>";
+    document.getElementById("list").innerHTML += 
+        "<li id=header>Header</li>";
+    document.getElementById("list").innerHTML += 
+        "<li id=sidebar>Sidebar</li>";
+    document.getElementById("list").innerHTML += 
+        "<li id=disclaimer>Disclaimer</li>";
+    document.getElementById("list").innerHTML += 
+        "<li id=comments>Comments</li>";
+  }
+
+  function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+  
