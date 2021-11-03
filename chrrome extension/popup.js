@@ -56,6 +56,11 @@ colorDivs.addEventListener("click", async () => {
             //globalwind.labels.push("hey");
             //labels.push("5");
             //document.getElementById("list").innerHTML +=  "<li>5</li>";
+          } else if (response[i] == "6") {
+            colour = "#DEB8BE";
+            //globalwind.labels.push("hey");
+            //labels.push("6");
+            //document.getElementById("list").innerHTML +=  "<li>6</li>";
           }
           elements[k].style.backgroundColor = colour;
         }
