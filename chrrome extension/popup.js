@@ -30,33 +30,40 @@ colorDivs.addEventListener("click", async () => {
           var colour = "#81F3F4"
           if (response[i] == "1") {
             colour = "#81F3F4";
+            elements[k].style.backgroundColor = colour;
             //globalwind.labels.push("hi");
             //document.getElementById("list").innerHTML +=  "<li>1</li>";
           } else if (response[i] == "2") {
             colour = "#F4CA81";
+            elements[k].style.backgroundColor = colour;
             //globalwind.labels.push("hey");
             //document.getElementById("list").innerHTML +=  "<li>2</li>";
           } else if (response[i] == "3") {
             colour = "#72E574";
+            elements[k].style.backgroundColor = colour;
+            elements[k].style.outline = "#72E574 solid 4px";
+            elements[k].style.filter = "brightness(125%)";
             //globalwind.labels.push("hey");
             //document.getElementById("list").innerHTML +=  "<li>3</li>";
           } else if (response[i] == "4") {
             colour = "#CE2E3E";
+            elements[k].style.backgroundColor = colour;
             //globalwind.labels.push("hey");
             //labels.push("4");
             //document.getElementById("list").innerHTML +=  "<li>4</li>";
           } else if (response[i] == "5") {
             colour = "#9E2CCE";
+            elements[k].style.backgroundColor = colour;
             //globalwind.labels.push("hey");
             //labels.push("5");
             //document.getElementById("list").innerHTML +=  "<li>5</li>";
           } else if (response[i] == "6") {
             colour = "#DEB8BE";
+            elements[k].style.backgroundColor = colour;
             //globalwind.labels.push("hey");
             //labels.push("6");
             //document.getElementById("list").innerHTML +=  "<li>6</li>";
           }
-          elements[k].style.backgroundColor = colour;
         }
       }
 
