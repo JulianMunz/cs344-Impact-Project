@@ -28,12 +28,6 @@ colorDivs.addEventListener("click", async () => {
         for (var k = 0, maximum = elements.length; k < maximum; k++) {
           console.log(response[i]);
           var colour = "#81F3F4"
-          if (maximum > 1) {
-            if (response[i] == "1") {
-              colour = "#81F3F4";
-              break;
-            }
-          }
           if (response[i] == "1") {
             colour = "#81F3F4";
             //globalwind.labels.push("hi");
