@@ -42,7 +42,6 @@ colorDivs.addEventListener("click", async () => {
             colour = "#72E574";
             elements[k].style.backgroundColor = colour;
             elements[k].style.outline = "#72E574 solid 4px";
-            elements[k].style.filter = "brightness(125%)";
             //globalwind.labels.push("hey");
             //document.getElementById("list").innerHTML +=  "<li>3</li>";
           } else if (response[i] == "4") {
